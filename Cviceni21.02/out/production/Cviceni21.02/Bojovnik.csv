@@ -1,0 +1,94 @@
+public static void main(String[] args) {
+		try {
+
+			int jakDlouho = 0;
+			int kolikaty = 0;
+			int pocetSpravne = 0;
+			int bonusy = 0;
+			int temp = 0;
+			int temp0 = 0;
+			int Streak = 0;
+			String nicota = "";
+			String Rozdelovac = ",";
+			String odpoved = null;
+			Random random = new Random();
+			Scanner scanner = new Scanner(System.in);
+			Stopky Stopwatchky = new Stopky();
+			BufferedReader br = new BufferedReader(new FileReader("mesta.csv"));
+
+
+			ArrayList<Mesta> list = new ArrayList<Mesta>();
+
+			Mesta Domaci = new Mesta(null, 0); //Inicializace měst
+			Mesta Hoste = new Mesta(null, 0);
+
+
+
+
+
+
+
+		while ((nicota = br.readLine()) != null) { //Převod z CSV do Arraylistu
+			String[] mesta = nicota.split(Rozdelovac);
+			list.add(new Mesta(mesta[0], Integer.parseInt(mesta[1]))); //Převod ze Stringu do Intu
+		}
+			File file = new File("mesta.csv");
+			FileWriter fw = new FileWriter(file);
+			BufferedWriter bw = new BufferedWriter(fw);
+			System.out.println(list.size());
+
+
+
+		System.out.println("Vyberte. \n1. Hrát \n2. Přidat město\n3. Smazat město");
+			int odpoved2 = scanner.nextInt();
+			switch (odpoved2) {
+				case 1 -> { // Žádný edit, jde se hrát
+					for (Mesta item : list) {
+						bw.write(item.toCSV()); //Uložení do CSV (NázevMěsta, PočetObyvatel)
+						bw.newLine();
+					}
+					bw.close();
+					fw.close();
+				}
+				case 2 -> { // Přidání města
+					scanner.nextLine();
+					System.out.println("Jaké město chcete přidat?");
+					String tempJmeno = scanner.nextLine();
+					System.out.println("Kolik má obyvatel? (Píš v tís.)");
+					int tempOby = scanner.nextInt();
+					list.add(new Mesta(tempJmeno, tempOby)); // Přidání do listu
+					for (Mesta value : list) {
+						bw.write(value.toCSV());
+						bw.newLine();
+					}
+					bw.close();
+					fw.close();
+				}
+				case 3 -> { //Smazání města
+					scanner.nextLine();
+					for (int i = 0; i < list.size(); i++) {
+						System.out.println(i + 1 + ". " + list.get(i).toCSV());
+					}
+					System.out.println("Které město chceš smazat? (Piš číslo)");
+					odpoved2 = scanner.nextInt();
+					if (odpoved2 > list.size()) {
+						System.out.println("Odpoveď přesahuje velikost listu.");
+					} else {
+						list.remove(odpoved2);
+						System.out.println("Smazáno");
+					}
+					for (Mesta mesta : list) {
+						bw.write(mesta.toCSV());
+						bw.newLine();
+					}
+					bw.close();
+					fw.close();
+				}
+			}
+
+
+------------------------------------------
+
+public String toCSV(){
+		return Nazev+","+pocetObyvatel;
+	}
